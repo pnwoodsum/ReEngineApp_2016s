@@ -35,7 +35,7 @@ void AppClass::Update(void)
 	//First person camera movement
 	if (m_bFPC == true)
 		CameraRotation();
-
+	
 	//Call the arcball method
 	ArcBall();
 
@@ -50,10 +50,17 @@ void AppClass::Update(void)
 
 #pragma region YOUR CODE GOES HERE
 	//Calculate the position of the Earth
+	
 	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Earth += distanceEarth;
+	m_m4Earth = glm::rotate(IDENTITY_M4, (1 / 28)*m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Earth = m_m4Sun;
 
 	//Calculate the position of the Moon
 	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Moon += distanceMoon;
+	m_m4Moon = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Moon = m_m4Sun;
 #pragma endregion
 
 #pragma region Print info

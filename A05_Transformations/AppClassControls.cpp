@@ -41,6 +41,15 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+		m_m4Sun += glm::translate(vector3(1.0f, 0.0f, 0.0f));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		m_m4Sun += glm::translate(vector3(1.0f, 1.0f, 0.0f));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		m_m4Sun += glm::translate(vector3(0.0f, 0.0f, 1.0f));
 #pragma endregion
 
 #pragma region Other Actions
