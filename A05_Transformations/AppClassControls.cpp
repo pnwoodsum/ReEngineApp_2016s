@@ -25,7 +25,7 @@ void AppClass::ProcessKeyboard(void)
 #pragma endregion
 
 #pragma region Camera Positioning
-	if(bModifier)
+	if(dModifier)
 		fSpeed *= 10.0f;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		m_pCameraMngr->MoveForward(fSpeed);
@@ -45,11 +45,14 @@ void AppClass::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
 
+
+
+	// Added for movement to control the systems location.
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 		m_v3Sun = vector3(0.0f, 0.0f, 0.0f);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-		if (dModifier) {
+		if (bModifier) {
 			m_v3Sun -= vector3(fSpeed, 0.0f, 0.0f);
 		}
 		else {
@@ -57,7 +60,7 @@ void AppClass::ProcessKeyboard(void)
 		}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
-		if (dModifier) {
+		if (bModifier) {
 			m_v3Sun -= vector3(0.0f, fSpeed, 0.0f);
 			
 		}
@@ -66,7 +69,7 @@ void AppClass::ProcessKeyboard(void)
 		}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-		if (dModifier) {
+		if (bModifier) {
 			m_v3Sun -= vector3(0.0f, 0.0f, fSpeed);
 		}
 		else {
