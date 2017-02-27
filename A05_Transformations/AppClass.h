@@ -19,6 +19,8 @@ class AppClass : public ReEngAppClass
 	matrix4 m_m4Sun;// Matrix for the Sun
 	matrix4 m_m4Earth;// Matrix for the Earth
 	matrix4 m_m4Moon;// Matrix for the Moon
+	
+	vector3 m_v3Sun;
 
 	float m_fEarthTimer = 0; //Will count the cycles we are RE_RUNNING
 	float m_fMoonTimer = 0; //Will count the cycles the moon is RE_RUNNING

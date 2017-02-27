@@ -1,6 +1,7 @@
 #include "AppClass.h"
 void AppClass::ProcessKeyboard(void)
 {
+	bool dModifier = false;
 	bool bModifier = false;
 	float fSpeed = 0.01f;
 
@@ -19,6 +20,8 @@ void AppClass::ProcessKeyboard(void)
 #pragma region Modifiers
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
 		bModifier = true;
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
+		dModifier = true;
 #pragma endregion
 
 #pragma region Camera Positioning
@@ -42,14 +45,33 @@ void AppClass::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		m_v3Sun = vector3(0.0f, 0.0f, 0.0f);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-		m_m4Sun += glm::translate(vector3(1.0f, 0.0f, 0.0f));
+		if (dModifier) {
+			m_v3Sun -= vector3(fSpeed, 0.0f, 0.0f);
+		}
+		else {
+			m_v3Sun += vector3(fSpeed, 0.0f, 0.0f);
+		}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
-		m_m4Sun += glm::translate(vector3(1.0f, 1.0f, 0.0f));
+		if (dModifier) {
+			m_v3Sun -= vector3(0.0f, fSpeed, 0.0f);
+			
+		}
+		else {
+			m_v3Sun += vector3(0.0f, fSpeed, 0.0f);
+		}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-		m_m4Sun += glm::translate(vector3(0.0f, 0.0f, 1.0f));
+		if (dModifier) {
+			m_v3Sun -= vector3(0.0f, 0.0f, fSpeed);
+		}
+		else {
+			m_v3Sun += vector3(0.0f, 0.0f, fSpeed);
+		}
 #pragma endregion
 
 #pragma region Other Actions
