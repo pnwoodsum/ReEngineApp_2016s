@@ -11,7 +11,7 @@ void AppClass::InitVariables(void)
 	// Color of the screen
 	m_v4ClearColor = vector4(REBLACK, 1); // Set the clear color to black
 
-	m_pMeshMngr->LoadModel("Sorted\\WallEye.bto", "WallEye");
+	m_pMeshMngr->LoadModel("Minecraft\\Creeper.bto", "Creeper");
 
 	fDuration = 1.0f;
 }
@@ -36,7 +36,49 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+	
+
+	static DWORD timerSinceBoot = GetTickCount(); //Timer since the computer was botted
+	DWORD timerSinceStart = GetTickCount() - timerSinceBoot; // Current time
+	float fTimer = timerSinceStart / 1000.0f; // Convert time to seconds
+
+	m_pMeshMngr->PrintLine(""); // Print an empty line
+	m_pMeshMngr->PrintLine(std::to_string(fTimer)); // Print the timer
+
+	static vector3 v3aLocations[11] = {
+		vector3(-4.0f, -2.0f, 5.0f),
+		vector3(1.0f, -2.0f, 5.0f),
+		vector3(-3.0f, -1.0f, 3.0f),
+		vector3(2.0f, -1.0f, 3.0f),
+		vector3(-2.0f, 0.0f, 0.0f),
+		vector3(3.0f, 0.0f, 0.0f),
+		vector3(-1.0f, 1.0f, -3.0f),
+		vector3(4.0f, 1.0f, -3.0f),
+		vector3(0.0f, 2.0f, -5.0f),
+		vector3(5.0f, 2.0f, -5.0f),
+		vector3(1.0f, 3.0f, -5.0f)
+	};
+
+	for (int i = 0; i < 11; i++) {
+		m_pMeshMngr->AddSphereToRenderList(glm::translate(v3aLocations[i]) * glm::scale(vector3(0.1)), RERED, WIRE | SOLID);
+	}
+
+
+	vector3 v3Start = vector3(-4.0f, -0, 0);
+	vector3 v3End = vector3(5, 0, 0);
+	float percentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+
+	if (percentage > 1.0f) {
+		percentage = 1.0f;
+	}
+
+	vector3 v3Current = glm::lerp(v3Start, v3End, percentage);
+
+	m_pMeshMngr->PrintLine("Percentage: " + std::to_string(percentage)); // Print the timer
+
+	matrix4 m4Creeper = glm::translate(v3Current);
+	m_pMeshMngr->SetModelMatrix(m4Creeper, "Creeper");
+
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
