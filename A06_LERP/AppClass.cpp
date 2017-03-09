@@ -11,7 +11,7 @@ void AppClass::InitVariables(void)
 	// Color of the screen
 	m_v4ClearColor = vector4(REBLACK, 1); // Set the clear color to black
 
-	m_pMeshMngr->LoadModel("Minecraft\\Creeper.bto", "Creeper");
+	m_pMeshMngr->LoadModel("Sorted\\WallEye.bto", "Creeper");
 
 	fDuration = 1.0f;
 }
@@ -36,14 +36,20 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Your Code goes here
-	
-
 	static DWORD timerSinceBoot = GetTickCount(); //Timer since the computer was botted
 	DWORD timerSinceStart = GetTickCount() - timerSinceBoot; // Current time
-	float fTimer = timerSinceStart / 1000.0f; // Convert time to seconds
+
+	static float fPreviousTimer = 0.0f;
+	static float fTimer = 0.0f;
+
+	fPreviousTimer = fTimer;
+	fTimer = timerSinceStart / 1000.0f; // Convert time to seconds
+
+	static float fPercentageTracker = 0.0f;
+	fPercentageTracker += (fTimer - fPreviousTimer);
 
 	m_pMeshMngr->PrintLine(""); // Print an empty line
-	m_pMeshMngr->PrintLine(std::to_string(fTimer)); // Print the timer
+	m_pMeshMngr->PrintLine("Total Time: " + std::to_string(fTimer)); // Print the timer
 
 	static vector3 v3aLocations[11] = {
 		vector3(-4.0f, -2.0f, 5.0f),
@@ -60,25 +66,38 @@ void AppClass::Update(void)
 	};
 
 	for (int i = 0; i < 11; i++) {
-		m_pMeshMngr->AddSphereToRenderList(glm::translate(v3aLocations[i]) * glm::scale(vector3(0.1)), RERED, WIRE | SOLID);
+		m_pMeshMngr->AddSphereToRenderList(glm::translate(v3aLocations[i]) * glm::scale(vector3(0.1)), RERED, SOLID);
 	}
 
+	static int iStart = 0;
+	static int iEnd = 1;
+	
+	float fDistance = glm::distance(v3aLocations[iStart], v3aLocations[iEnd]);
 
-	vector3 v3Start = vector3(-4.0f, -0, 0);
-	vector3 v3End = vector3(5, 0, 0);
-	float percentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+	float percentage = MapValue(fPercentageTracker, 0.0f, fDistance/4, 0.0f, 1.0f);
 
 	if (percentage > 1.0f) {
-		percentage = 1.0f;
+
+		iStart++;
+		iEnd++;
+		if (iStart > 10) {
+			iStart = 0;
+		}
+		if (iEnd > 10) {
+			iEnd = 0;
+		}
+		
+		percentage = 0.0f;
+		fPercentageTracker = 0.0f;
 	}
 
-	vector3 v3Current = glm::lerp(v3Start, v3End, percentage);
+	vector3 v3Current = glm::lerp(v3aLocations[iStart], v3aLocations[iEnd], percentage);
 
+	m_pMeshMngr->PrintLine("Translate Time: " + std::to_string(fPercentageTracker)); // Print the timer
 	m_pMeshMngr->PrintLine("Percentage: " + std::to_string(percentage)); // Print the timer
 
 	matrix4 m4Creeper = glm::translate(v3Current);
 	m_pMeshMngr->SetModelMatrix(m4Creeper, "Creeper");
-
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
