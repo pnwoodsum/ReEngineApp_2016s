@@ -88,13 +88,13 @@ void AppClass::Update(void)
 		ToMatrix4(qEarthOrbit) *
 		glm::translate(vector3(11.0f, 0.0f, 0.0f)) *
 		ToMatrix4(qMoon) *
-		glm::translate(vector3(2.0f, 0.0f, 0.0f)) *
+		glm::translate(vector3(0.524f * 2.0f, 0.0f, 0.0f)) *
 		glm::scale(m_m4Moon, vector3(1.0f, 1.0f, 1.0f)*(0.524f*0.25f));
 
 	m_m4Venus = IDENTITY_M4;
 	m_m4Venus = glm::translate(m_v3Sun) *
 		ToMatrix4(qVenusOrbit) *
-		glm::translate(vector3(11.0f * 0.72f, 0.0f, 0.0f)) *
+		glm::translate(vector3(5.926f + ((11.0f - 5.936f) * 0.72f), 0.0f, 0.0f)) *
 		ToMatrix4(qVenusRev) *
 		glm::scale(m_m4Venus, vector3(1.0f, 1.0f, 1.0f)*(0.524f*0.815f));
 
