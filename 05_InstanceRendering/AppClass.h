@@ -18,6 +18,7 @@ class AppClass : public ReEngAppClass
 	MyMesh* m_pMesh = nullptr;
 	float* m_fMatrixArray = nullptr;
 	int m_nObjects = 200;
+
 public:
 	typedef ReEngAppClass super;
 	/*

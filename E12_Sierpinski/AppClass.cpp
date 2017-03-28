@@ -10,25 +10,52 @@ void AppClass::InitVariables(void)
 {
 	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 15.0f), vector3(0.0f, 0.0f, 0.0f), REAXISY);
 
-	m_pMesh = new MyMesh();
-	
-	//Creating the Mesh points
-	m_pMesh->AddVertexPosition(vector3(-1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3(1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, 1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
+	m_pSierpinski = new MyMesh();
+
+	// These values can be changed
+	int nRecursions = 2; // Number of recursions (1 recursion = 1 triangle, 2 = 1 tri-force, etc...)
+	float fTotalSideLength = 10.0f; // The side length of the entire triangle.
+	//
+
+	if (nRecursions <= 0) {
+		nRecursions = 1;
+	}
+
+	float fTotalHeight = sqrt(pow(fTotalSideLength, 2) - pow(fTotalSideLength / 2, 2));
+	float fSideLength = fTotalSideLength / pow(2, nRecursions-1);
+	float fHeight = fTotalHeight / pow(2, nRecursions - 1);
+
+	// Creating triangle
+	m_pSierpinski->AddVertexPosition(vector3(-fSideLength/2, (fTotalHeight - fHeight)-(fTotalHeight/2), 0.0f));
+	m_pSierpinski->AddVertexColor(REGREEN);
+	m_pSierpinski->AddVertexPosition(vector3(fSideLength/2, (fTotalHeight - fHeight)-(fTotalHeight/2), 0.0f));
+	m_pSierpinski->AddVertexColor(RERED);
+	m_pSierpinski->AddVertexPosition(vector3(0.0f, fTotalHeight-(fTotalHeight/2), 0.0f));
+	m_pSierpinski->AddVertexColor(REBLUE);
 
 	//Compiling the mesh
-	m_pMesh->CompileOpenGL3X();
+	m_pSierpinski->CompileOpenGL3X();
+
+	if (nRecursions == 1) {
+		return;
+	}
+
+	int nDraws = pow(3, nRecursions - 2);
+	int nTris = pow(3, nRecursions - 1);
+
+	
 }
+
+//void AppClass::CreateTriangles() {
+//	for (int nObject = 0; nObject < m_nObjects; nObject++)
+//	{
+//		const float* m4MVP = glm::value_ptr(
+//			glm::translate(vector3(0.01f * -nObject, 0.0f, 1.0f * -nObject)) *
+//			glm::rotate(IDENTITY_M4, nObject * 5.0f, REAXISZ)
+//		);
+//		memcpy(&m_fMatrixArray[nObject * 16], m4MVP, 16 * sizeof(float));
+//	}
+//}
 
 void AppClass::Update(void)
 {
@@ -59,14 +86,14 @@ void AppClass::Update(void)
 
 void AppClass::Display(void)
 {
-	ClearScreen();
+	ClearScreen(); // Clear the screen
 	
 	//Matrices from the camera
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
-
-	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObject(s)											   //clear the screen
 	
+	m_pSierpinski->Render(m4Projection, m4View, IDENTITY_M4);
+
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
@@ -75,10 +102,10 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
 	SafeDelete(m_fMatrixArray);
-	if (m_pMesh != nullptr)
+	if (m_pSierpinski != nullptr)
 	{
-		delete m_pMesh;
-		m_pMesh = nullptr;
+		delete m_pSierpinski;
+		m_pSierpinski = nullptr;
 	}
 	super::Release();
 }
