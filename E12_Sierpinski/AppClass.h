@@ -29,7 +29,8 @@ class AppClass : public ReEngAppClass
 public:
 	typedef ReEngAppClass super;
 
-	MyMesh* m_pMesh = nullptr;
+	MyMesh* m_pSierpinski = nullptr;
+
 	float* m_fMatrixArray = nullptr;
 	int m_nObjects = 200;
 
@@ -93,6 +94,12 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void WriteConfig(void) final {}
+	/*
+	USAGE: Draws three triangles in the format of a second recursion sierpinski triangle
+	ARGUMENTS: an x and y location
+	OUTPUT: ---
+	*/
+	virtual void CreateTriangles(float xInit, float yInit, float sideLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions, int triNum);
 };
 
 #endif //__APPLICATION_H_
