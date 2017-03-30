@@ -33,7 +33,9 @@ public:
 
 	float* m_fMatrixArray = nullptr;
 	int m_nObjects = 200;
+
 	int m_nTris = 1;
+	int m_nTriNum = 0;
 
 	/* Constructor */
 	AppClass(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) : super(hInstance, lpCmdLine, nCmdShow) {}
@@ -100,7 +102,7 @@ public:
 	ARGUMENTS: an x and y location
 	OUTPUT: ---
 	*/
-	virtual void CreateTriangles(float xInit, float yInit, float sideLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions, int triNum);
+	virtual void CreateTriangles(float xInit, float yInit, float sideLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions);
 };
 
 #endif //__APPLICATION_H_

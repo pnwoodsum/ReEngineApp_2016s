@@ -12,18 +12,18 @@ void AppClass::InitVariables(void)
 
 	m_pSierpinski = new MyMesh();
 
-	// Can change to be 1, 2 or 3
-	int nRecursions = 3; // Number of recursions (1 recursion = 1 triangle, 2 = 1 tri-force, etc...)
-	float fTotalSideLength = 10.0f; // The side length of the entire triangle.
+	// Can change these 2 values
+	int m_nRecursions = 5; // Number of recursions (1 recursion = 1 triangle, 2 = 1 tri-force, etc...)
+	float m_fTotalSideLength = 12.0f; // The side length of the entire triangle.
 	//
 
-	if (nRecursions <= 0) {
-		nRecursions = 1;
+	if (m_nRecursions <= 0) {
+		m_nRecursions = 1;
 	}
 
-	float fTotalHeight = sqrt(pow(fTotalSideLength, 2) - pow(fTotalSideLength / 2, 2));
-	float fSideLength = fTotalSideLength / pow(2, nRecursions - 1);
-	float fHeight = fTotalHeight / pow(2, nRecursions - 1);
+	float fTotalHeight = sqrt(pow(m_fTotalSideLength, 2) - pow(m_fTotalSideLength / 2, 2));
+	float fSideLength = m_fTotalSideLength / pow(2, m_nRecursions - 1);
+	float fHeight = fTotalHeight / pow(2, m_nRecursions - 1);
 
 	// Creating triangle
 	m_pSierpinski->AddVertexPosition(vector3(-fSideLength / 2, (fTotalHeight - fHeight) - (fTotalHeight / 2), 0.0f));
@@ -36,122 +36,44 @@ void AppClass::InitVariables(void)
 	//Compiling the mesh
 	m_pSierpinski->CompileOpenGL3X();
 	
-	m_nTris = pow(3, nRecursions - 1);
+	// Find total number of triangles based on number of recursions
+	m_nTris = pow(3, m_nRecursions - 1);
+
+	// see size of matrix array based on number of triangles
 	m_fMatrixArray = new float[m_nTris * 16];
-	std::cout << m_nTris << std::endl;
-	if (nRecursions == 1) {
+
+	if (m_nRecursions == 1) {
 		const float* m4MVP = glm::value_ptr(glm::translate(vector3(0.0f, 0.0f, 0.0f)));
 
 		memcpy(&m_fMatrixArray[0], m4MVP, 16 * sizeof(float));
 	}
-	else if (nRecursions == 2) {
-		const float* m4MVP = glm::value_ptr(glm::translate(vector3(0.0f, 0.0f, 0.0f)));
-		memcpy(&m_fMatrixArray[0 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(-fSideLength / 2, -fHeight, 0.0f)));
-		memcpy(&m_fMatrixArray[1 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(fSideLength / 2, -fHeight, 0.0f)));
-		memcpy(&m_fMatrixArray[2 * 16], m4MVP, 16 * sizeof(float));
+	else {
+		CreateTriangles(0.0f, 0.0f, fSideLength, fHeight, m_fTotalSideLength, fTotalHeight, *m_fMatrixArray, m_nRecursions);
 	}
-	else if (nRecursions == 3) {
-		const float* m4MVP = glm::value_ptr(glm::translate(vector3(0.0f, 0.0f, 0.0f)));
-		memcpy(&m_fMatrixArray[0 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(-fSideLength/2, -fHeight, 0.0f)));
-		memcpy(&m_fMatrixArray[1 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(fSideLength/2, -fHeight, 0.0f)));
-		memcpy(&m_fMatrixArray[2 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(-fSideLength, -fHeight*2, 0.0f)));
-		memcpy(&m_fMatrixArray[3 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(fSideLength, -fHeight * 2, 0.0f)));
-		memcpy(&m_fMatrixArray[4 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(-(3*fSideLength)/2, -fHeight * 3, 0.0f)));
-		memcpy(&m_fMatrixArray[5 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(-fSideLength / 2, -fHeight * 3, 0.0f)));
-		memcpy(&m_fMatrixArray[6 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3(fSideLength / 2, -fHeight * 3, 0.0f)));
-		memcpy(&m_fMatrixArray[7 * 16], m4MVP, 16 * sizeof(float));
-
-		m4MVP = glm::value_ptr(glm::translate(vector3((3 * fSideLength) / 2, -fHeight * 3, 0.0f)));
-		memcpy(&m_fMatrixArray[8 * 16], m4MVP, 16 * sizeof(float));
-	}
-	//else {
-	//	//CreateTriangles(0.02, fTotalHeight / 2, fSideLength, fHeight, fTotalSideLength, fTotalHeight, *m_fMatrixArray, nRecursions, m_nTris);
-	//}
-
 }
 
-void AppClass::CreateTriangles(float initX, float initY, float triLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions, int triNum) {
-//
-//	float xPos = initX;
-//
-//	float yPos = initY;
-//
-//	int curRecursion = numRecursions;
-//	float newTriLength = totalTriLength / 2;
-//	float newTriHeight = totalTriHeight / 2;
-//
-//	if (curRecursion > 2) {
-//		CreateTriangles(initX, initY, triLength, triHeight, newTriLength, newTriHeight, matArray, curRecursion - 1, triNum);
-//	}
-//	else {
-//		const float* m4MVP = glm::value_ptr(glm::translate(vector3(initX, initY, 0.0f)));
-//		memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//		triNum++;
-//
-//		m4MVP = glm::value_ptr(glm::translate(vector3(initX - triLength / 2, initY - triHeight, 0.0f)));
-//		memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//		triNum++;
-//
-//		m4MVP = glm::value_ptr(glm::translate(vector3(initX + triLength / 2, initY - triHeight, 0.0f)));
-//		memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//		triNum++;
-//	}
+// Recursively create sierpinski triangle based on recursions
+void AppClass::CreateTriangles(float initX, float initY, float triLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions) {
+
+	if (numRecursions > 2) {
+		CreateTriangles(initX, initY, triLength, triHeight, totalTriLength/2, totalTriHeight/2, matArray, numRecursions - 1);
+		CreateTriangles(initX - totalTriLength/4, initY - totalTriHeight/2, triLength, triHeight, totalTriLength / 2, totalTriHeight / 2, matArray, numRecursions - 1);
+		CreateTriangles(initX + totalTriLength/4, initY - totalTriHeight/2, triLength, triHeight, totalTriLength / 2, totalTriHeight / 2, matArray, numRecursions - 1);
+	}
+	else {
+		const float* m4MVP = glm::value_ptr(glm::translate(vector3(initX, initY, 0.0f)));
+		memcpy(&m_fMatrixArray[m_nTriNum * 16], m4MVP, 16 * sizeof(float));
+		m_nTriNum++;
+
+		m4MVP = glm::value_ptr(glm::translate(vector3(initX - (triLength / 2), initY - triHeight, 0.0f)));
+		memcpy(&m_fMatrixArray[m_nTriNum * 16], m4MVP, 16 * sizeof(float));
+		m_nTriNum++;
+
+		m4MVP = glm::value_ptr(glm::translate(vector3(initX + (triLength / 2), initY - triHeight, 0.0f)));
+		memcpy(&m_fMatrixArray[m_nTriNum * 16], m4MVP, 16 * sizeof(float));
+		m_nTriNum++;
+	}
 }
-
-
-//void AppClass::CreateTriangles(float initX, float initY, float triLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions) {
-//
-//	float xPos = initX;
-//
-//	float yPos = initY;
-//
-//	int curRecursion = numRecursions;
-//	int triNum = 0;
-//	if (curRecursion > 1) {
-//		CreateTriangles(initX, initY, triLength, triHeight, matArray, triNum, curRecursion - 1);
-//	}
-//
-//	const float* m4MVP = glm::value_ptr(glm::translate(vector3(initX, initY, 0.0f)));
-//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//	triNum++;
-//
-//	m4MVP = glm::value_ptr(glm::translate(vector3(initX - triLength / 2, initY - triHeight, 0.0f)));
-//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//	triNum++;
-//
-//	m4MVP = glm::value_ptr(glm::translate(vector3(initX + triLength / 2, initY - triHeight, 0.0f)));
-//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
-//	triNum++;
-//}
-
-
-//m_fMatrixArray = new float[m_nObjects * 16];
-//	for (int nObject = 0; nObject < m_nObjects; nObject++)
-//	{
-//		const float* m4MVP = glm::value_ptr(
-//			glm::translate(vector3(0.01f * -nObject, 0.0f, 1.0f * -nObject)) *
-//			glm::rotate(IDENTITY_M4, nObject * 5.0f, REAXISZ)
-//		);
-//		memcpy(&m_fMatrixArray[nObject * 16], m4MVP, 16 * sizeof(float));
-//	}
 
 void AppClass::Update(void)
 {
