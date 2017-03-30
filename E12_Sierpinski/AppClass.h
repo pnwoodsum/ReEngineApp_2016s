@@ -33,6 +33,7 @@ public:
 
 	float* m_fMatrixArray = nullptr;
 	int m_nObjects = 200;
+	int m_nTris = 1;
 
 	/* Constructor */
 	AppClass(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) : super(hInstance, lpCmdLine, nCmdShow) {}
