@@ -41,12 +41,79 @@ void AppClass::InitVariables(void)
 	}
 
 	int nDraws = pow(3, nRecursions - 2);
-	int nTris = pow(3, nRecursions - 1);
+	int m_nTris = pow(3, nRecursions - 1);
 
-	
+	m_fMatrixArray = new float[3 * 16];
+
+	const float* m4MVP = glm::value_ptr(glm::translate(vector3(0.0f, 0.0f, 0.0f)));
+
+	memcpy(&m_fMatrixArray[0 * 16], m4MVP, 16 * sizeof(float));
+
+	m4MVP = glm::value_ptr(glm::translate(vector3(-fTotalSideLength/4, -fTotalHeight/2, 0.0f)));
+
+	memcpy(&m_fMatrixArray[1 * 16], m4MVP, 16 * sizeof(float));
+
+	m4MVP = glm::value_ptr(glm::translate(vector3(fTotalSideLength/4, -fTotalHeight / 2, 0.0f)));
+
+	memcpy(&m_fMatrixArray[2 * 16], m4MVP, 16 * sizeof(float));
+
 }
 
-//void AppClass::CreateTriangles() {
+void AppClass::CreateTriangles(float initX, float initY, float triLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions, int triNum) {
+
+	float xPos = initX;
+
+	float yPos = initY;
+
+	int curRecursion = numRecursions;
+	float newTriLength = totalTriLength / 2;
+	float newTriHeight = totalTriHeight / 2;
+
+	if (curRecursion > 1) {
+		CreateTriangles(initX, initY, triLength, triHeight, newTriLength, newTriHeight, matArray, curRecursion - 1, triNum);
+	}
+
+	const float* m4MVP = glm::value_ptr(glm::translate(vector3(initX, initY, 0.0f)));
+	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+	triNum++;
+
+	m4MVP = glm::value_ptr(glm::translate(vector3(initX - triLength/2, initY - triHeight, 0.0f)));
+	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+	triNum++;
+
+	m4MVP = glm::value_ptr(glm::translate(vector3(initX + triLength/2, initY - triHeight, 0.0f)));
+	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+	triNum++;
+}
+
+
+//void AppClass::CreateTriangles(float initX, float initY, float triLength, float triHeight, float totalTriLength, float totalTriHeight, float matArray, int numRecursions) {
+//
+//	float xPos = initX;
+//
+//	float yPos = initY;
+//
+//	int curRecursion = numRecursions;
+//	int triNum = 0;
+//	if (curRecursion > 1) {
+//		CreateTriangles(initX, initY, triLength, triHeight, matArray, triNum, curRecursion - 1);
+//	}
+//
+//	const float* m4MVP = glm::value_ptr(glm::translate(vector3(initX, initY, 0.0f)));
+//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+//	triNum++;
+//
+//	m4MVP = glm::value_ptr(glm::translate(vector3(initX - triLength / 2, initY - triHeight, 0.0f)));
+//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+//	triNum++;
+//
+//	m4MVP = glm::value_ptr(glm::translate(vector3(initX + triLength / 2, initY - triHeight, 0.0f)));
+//	memcpy(&m_fMatrixArray[triNum * 16], m4MVP, 16 * sizeof(float));
+//	triNum++;
+//}
+
+
+//m_fMatrixArray = new float[m_nObjects * 16];
 //	for (int nObject = 0; nObject < m_nObjects; nObject++)
 //	{
 //		const float* m4MVP = glm::value_ptr(
@@ -55,7 +122,6 @@ void AppClass::InitVariables(void)
 //		);
 //		memcpy(&m_fMatrixArray[nObject * 16], m4MVP, 16 * sizeof(float));
 //	}
-//}
 
 void AppClass::Update(void)
 {
@@ -92,7 +158,9 @@ void AppClass::Display(void)
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
 	
-	m_pSierpinski->Render(m4Projection, m4View, IDENTITY_M4);
+	m_pSierpinski->RenderList(m4Projection, m4View, m_fMatrixArray, 3);//Rendering nObjects
+
+	//m_pSierpinski->Render(m4Projection, m4View, IDENTITY_M4);
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

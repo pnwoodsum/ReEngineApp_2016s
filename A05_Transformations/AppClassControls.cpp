@@ -79,11 +79,11 @@ void AppClass::ProcessKeyboard(void)
 	// Change day length with + or -
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 		if (bModifier) {
-			m_fDay += 0.1f;
+			//m_fDay += 0.1f;
 		}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 		if (bModifier) {
-			m_fDay += 0.1;
+			//m_fDay += 0.1;
 		}
 #pragma endregion
 

@@ -58,12 +58,14 @@ void AppClass::Update(void)
 	quaternion qMoon;
 	quaternion qVenusOrbit;
 	quaternion qVenusRev;
-
+	 
 	float fPercentageEarthOrbit = MapValue((float)dRunTime, 0.0f, fEarthHalfOrbTime, 0.0f, 1.0f); // map for earth orbit
 	float fPercentageEarthRev = MapValue((float)dRunTime, 0.0f, fEarthHalfRevTime, 0.0f, 1.0f); // map for earth orbit
 	float fPercentageMoon = MapValue((float)dRunTime, 0.0f, fMoonHalfOrbTime, 0.0f, 1.0f); // map for earth orbit
 	float fPercentageVenusOrbit = MapValue((float)dRunTime, 0.0f, fVenusHalfOrbTime, 0.0f, 1.0f); // map for earth orbit
 	float fPercentageVenusRev = MapValue((float)dRunTime, 0.0f, fVenusHalfRevTime, 0.0f, 1.0f); // map for earth orbit
+
+	std::cout << fPercentageEarthRev << std::endl;
 
 	qEarthOrbit = glm::mix(q1, q2, fPercentageEarthOrbit);
 	qEarthRev = glm::mix(q1, q2, fPercentageEarthRev);
