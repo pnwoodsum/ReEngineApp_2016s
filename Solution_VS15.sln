@@ -75,7 +75,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E11_MidtermPractice", "E11_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A07_SLERP", "A07_SLERP\A07_SLERP.vcxproj", "{EF817BA9-17FE-44E0-B405-C5962E93B613}"
 EndProject
+<<<<<<< HEAD
 >>>>>>> origin/master
+=======
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex01_A", "Ex01_A\Ex01_A.vcxproj", "{C8CC8011-40C5-40B9-857B-7897DBBF2BDC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex01_B", "Ex01_B\Ex01_B.vcxproj", "{B1F0F215-F6DE-426D-8AB8-B85644569D5A}"
+EndProject
+>>>>>>> refs/remotes/labigm/master
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -188,11 +195,26 @@ Global
 		{1FBD25F3-8338-4126-BE77-DF3B49161AE9}.Debug|x86.Build.0 = Debug|Win32
 		{1FBD25F3-8338-4126-BE77-DF3B49161AE9}.Release|x86.ActiveCfg = Release|Win32
 		{1FBD25F3-8338-4126-BE77-DF3B49161AE9}.Release|x86.Build.0 = Release|Win32
+<<<<<<< HEAD
 		{EF817BA9-17FE-44E0-B405-C5962E93B613}.Debug|x86.ActiveCfg = Debug|Win32
 		{EF817BA9-17FE-44E0-B405-C5962E93B613}.Debug|x86.Build.0 = Debug|Win32
 		{EF817BA9-17FE-44E0-B405-C5962E93B613}.Release|x86.ActiveCfg = Release|Win32
 		{EF817BA9-17FE-44E0-B405-C5962E93B613}.Release|x86.Build.0 = Release|Win32
 >>>>>>> origin/master
+=======
+		{4965C0BB-DC2D-4C76-B565-2E5C77F75BDD}.Debug|x86.ActiveCfg = Debug|Win32
+		{4965C0BB-DC2D-4C76-B565-2E5C77F75BDD}.Debug|x86.Build.0 = Debug|Win32
+		{4965C0BB-DC2D-4C76-B565-2E5C77F75BDD}.Release|x86.ActiveCfg = Release|Win32
+		{4965C0BB-DC2D-4C76-B565-2E5C77F75BDD}.Release|x86.Build.0 = Release|Win32
+		{C8CC8011-40C5-40B9-857B-7897DBBF2BDC}.Debug|x86.ActiveCfg = Debug|Win32
+		{C8CC8011-40C5-40B9-857B-7897DBBF2BDC}.Debug|x86.Build.0 = Debug|Win32
+		{C8CC8011-40C5-40B9-857B-7897DBBF2BDC}.Release|x86.ActiveCfg = Release|Win32
+		{C8CC8011-40C5-40B9-857B-7897DBBF2BDC}.Release|x86.Build.0 = Release|Win32
+		{B1F0F215-F6DE-426D-8AB8-B85644569D5A}.Debug|x86.ActiveCfg = Debug|Win32
+		{B1F0F215-F6DE-426D-8AB8-B85644569D5A}.Debug|x86.Build.0 = Debug|Win32
+		{B1F0F215-F6DE-426D-8AB8-B85644569D5A}.Release|x86.ActiveCfg = Release|Win32
+		{B1F0F215-F6DE-426D-8AB8-B85644569D5A}.Release|x86.Build.0 = Release|Win32
+>>>>>>> refs/remotes/labigm/master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -226,7 +248,13 @@ Global
 <<<<<<< HEAD
 =======
 		{1FBD25F3-8338-4126-BE77-DF3B49161AE9} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
+<<<<<<< HEAD
 		{EF817BA9-17FE-44E0-B405-C5962E93B613} = {124C8EDD-52BA-4EAA-A1F4-6D4302AB5DEC}
 >>>>>>> origin/master
+=======
+		{4965C0BB-DC2D-4C76-B565-2E5C77F75BDD} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
+		{C8CC8011-40C5-40B9-857B-7897DBBF2BDC} = {8A9C6231-C3D4-493B-A18E-E134FC3A1A35}
+		{B1F0F215-F6DE-426D-8AB8-B85644569D5A} = {8A9C6231-C3D4-493B-A18E-E134FC3A1A35}
+>>>>>>> refs/remotes/labigm/master
 	EndGlobalSection
 EndGlobal
