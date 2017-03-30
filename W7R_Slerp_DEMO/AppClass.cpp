@@ -39,15 +39,15 @@ void AppClass::Update(void)
 	quaternion q3;
 	
 	static float fTimer = 0.0f; //static timer to keep track
-	static int clockIndex = m_pSystem->GenClock();//generate a new clock in the system
-	fTimer += m_pSystem->LapClock(clockIndex);//get the delta time of that clock
+	static int clockIndex = m_pSystem->GenClock(); //generate a new clock in the system
+	fTimer += m_pSystem->LapClock(clockIndex); //get the delta time of that clock
 
-	float fCycleTime = 5.0f;// time the animation will take to perform
+	float fCycleTime = 5.0f; // time the animation will take to perform
 	float fPercentage = MapValue(fTimer, 0.0f, fCycleTime, 0.0f, 1.0f); //map the value in a percentage scale
 
 	q3 = glm::mix(q1, q2, fPercentage); //slerp the quaternions
 	
-	m_pMeshMngr->SetModelMatrix(ToMatrix4(q3), "Cow");//transform the quaternion to a matrix and assign it to the model
+	m_pMeshMngr->SetModelMatrix(ToMatrix4(q3), "Cow"); //transform the quaternion to a matrix and assign it to the model
 	
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddSkyboxToRenderList();

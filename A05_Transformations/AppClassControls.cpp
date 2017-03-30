@@ -75,6 +75,16 @@ void AppClass::ProcessKeyboard(void)
 		else {
 			m_v3Sun += vector3(0.0f, 0.0f, fSpeed);
 		}
+
+	// Change day length with + or -
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+		if (bModifier) {
+			m_fDay += 0.1f;
+		}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+		if (bModifier) {
+			m_fDay += 0.1;
+		}
 #pragma endregion
 
 #pragma region Other Actions
@@ -85,6 +95,7 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
 	static bool bFPSControll = false;
 	ON_KEY_PRESS_RELEASE(F, bFPSControll = !bFPSControll, m_pCameraMngr->SetFPS(bFPSControll));
+	
 #pragma endregion
 }
 void AppClass::ProcessMouse(void)

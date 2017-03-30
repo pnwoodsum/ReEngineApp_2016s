@@ -25,16 +25,14 @@ void AppClass::Update(void)
 	if (m_bFPC == true)
 		CameraRotation();
 
-	//Rotation matrices
-	matrix4 rotX = glm::rotate(IDENTITY_M4, m_v3Orientation.x, REAXISX);
-	matrix4 rotY = glm::rotate(IDENTITY_M4, m_v3Orientation.y, REAXISY);
-	matrix4 rotZ = glm::rotate(IDENTITY_M4, m_v3Orientation.z, REAXISZ);
+	// Quaternions
+	glm::quat q1 = glm::angleAxis(0.0f, vector3(m_v3Orientation));
 
 	//linear combination
-	m_mToWorld = rotX * rotY * rotZ;
+	//m_mToWorld = rotX * rotY * rotZ;
 
 	//Setting the model matrix
-	m_pMeshMngr->SetModelMatrix(m_mToWorld, "Steve");
+	m_pMeshMngr->SetModelMatrix(ToMatrix4(q1), "Steve");
 
 	//Adding the instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("Steve");
