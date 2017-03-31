@@ -14,6 +14,13 @@ class AppClass : public ReEngAppClass
 {
 	float m_fDay = 1.0f; //How much time in seconds a day lasts;
 
+	matrix4 m_m4Sun;// Matrix for the Sun
+	matrix4 m_m4Earth;// Matrix for the Earth
+	matrix4 m_m4Moon;// Matrix for the Moon
+	matrix4 m_m4Venus;// Matrix for Venus
+
+	vector3 m_v3Sun;
+
 public:
 	typedef ReEngAppClass super;
 	/*

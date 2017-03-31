@@ -18,6 +18,8 @@ void AppClass::InitVariables(void)
 	m_pSun->GenerateSphere(5.936f, 5, REYELLOW);
 	m_pEarth->GenerateTube(0.524f, 0.45f, 0.3f, 10, REBLUE);
 	m_pMoon->GenerateTube(0.524f * 0.27f, 0.45f * 0.27f, 0.3f * 0.27f, 10, REWHITE);
+
+	m_v3Sun = vector3(0.0f, 0.0f, 0.0f);
 }
 
 void AppClass::Update(void)
@@ -35,13 +37,14 @@ void AppClass::Update(void)
 	//First person camera movement
 	if (m_bFPC == true)
 		CameraRotation();
-
+	
 	//Call the arcball method
 	ArcBall();
 
 	//This matrices will just orient the objects to the camera
 	matrix4 rotateX = glm::rotate(IDENTITY_M4, 90.0f, vector3(1.0f, 0.0f, 0.0f));
 	matrix4 rotateY = glm::rotate(IDENTITY_M4, 90.0f, vector3(0.0f, 1.0f, 0.0f));
+	matrix4 rotateZ = glm::rotate(IDENTITY_M4, 90.0f, vector3(0.0f, 0.0f, 1.0f));
 
 	//This matrices will hold the relative transformation of the Moon and the Earth
 	matrix4 distanceEarth = glm::translate(11.0f, 0.0f, 0.0f);
@@ -49,11 +52,17 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region YOUR CODE GOES HERE
-	//Calculate the position of the Earth
-	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	// Update the sun's position (due to input)
+	m_m4Sun = glm::translate(m_v3Sun);
 
-	//Calculate the position of the Moon
-	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
+	//Calculate the position of the Earth and the Moon
+
+	m_m4Earth = glm::rotate(m_m4Sun, m_fEarthTimer, REAXISY)*(distanceEarth);
+	
+	m_m4Moon = glm::rotate(m_m4Earth, m_fMoonTimer/2.177f, REAXISY)*distanceMoon*rotateZ;
+
+	m_m4Earth = glm::rotate(m_m4Earth, m_fEarthTimer * 360, REAXISZ);
+
 #pragma endregion
 
 #pragma region Print info

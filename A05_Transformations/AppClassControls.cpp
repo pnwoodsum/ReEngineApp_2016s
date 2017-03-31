@@ -1,6 +1,7 @@
 #include "AppClass.h"
 void AppClass::ProcessKeyboard(void)
 {
+	bool dModifier = false;
 	bool bModifier = false;
 	float fSpeed = 0.01f;
 
@@ -19,10 +20,12 @@ void AppClass::ProcessKeyboard(void)
 #pragma region Modifiers
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
 		bModifier = true;
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
+		dModifier = true;
 #pragma endregion
 
 #pragma region Camera Positioning
-	if(bModifier)
+	if(dModifier)
 		fSpeed *= 10.0f;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		m_pCameraMngr->MoveForward(fSpeed);
@@ -41,6 +44,47 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(fSpeed);
+
+
+
+	// Added for movement to control the systems location.
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		m_v3Sun = vector3(0.0f, 0.0f, 0.0f);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+		if (bModifier) {
+			m_v3Sun -= vector3(fSpeed, 0.0f, 0.0f);
+		}
+		else {
+			m_v3Sun += vector3(fSpeed, 0.0f, 0.0f);
+		}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		if (bModifier) {
+			m_v3Sun -= vector3(0.0f, fSpeed, 0.0f);
+			
+		}
+		else {
+			m_v3Sun += vector3(0.0f, fSpeed, 0.0f);
+		}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		if (bModifier) {
+			m_v3Sun -= vector3(0.0f, 0.0f, fSpeed);
+		}
+		else {
+			m_v3Sun += vector3(0.0f, 0.0f, fSpeed);
+		}
+
+	// Change day length with + or -
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+		if (bModifier) {
+			//m_fDay += 0.1f;
+		}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+		if (bModifier) {
+			//m_fDay += 0.1;
+		}
 #pragma endregion
 
 #pragma region Other Actions
@@ -51,6 +95,7 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
 	static bool bFPSControll = false;
 	ON_KEY_PRESS_RELEASE(F, bFPSControll = !bFPSControll, m_pCameraMngr->SetFPS(bFPSControll));
+	
 #pragma endregion
 }
 void AppClass::ProcessMouse(void)
