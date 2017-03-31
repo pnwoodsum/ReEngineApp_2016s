@@ -1,33 +1,71 @@
 #include "MyCameraClass.h"
 
-class MyCameraClass {
 
-public:
-	MyCameraClass();
+MyCameraClass::MyCameraClass(vector3 position, vector3 target, vector3 up) {
+	m_fRotation;
+	m_v3ViewVector;
+	m_v3UpVector;
 
-	matrix4 GetView(void);
+	m_m4ViewMatrix = glm::translate(position);
+	m_m4ProjMatrix = glm::perspective(m_fFoV, 4.0f/3.0f, 0.1f, 100.0f);
+	m_m4OrthoMatrix = glm::ortho(0.0f, 400.0f, 0.0f, 300.0f, 0.1f, 100.0f);
+}
 
-	matrix4 GetProject(bool bOrthographic);
+// Get the camera's view matrix
+matrix4 MyCameraClass::GetView(void) {
+	return m_m4ViewMatrix;
+}
 
-	void SetPosition(vector3 v3Position);
+// Get the camera's projection matrix
+matrix4 MyCameraClass::GetProject(bool bOrthographic) {
+	if (bOrthographic) {
+		return m_m4OrthoMatrix;
+	}
+	else {
+		return m_m4ProjMatrix;
+	}
+}
 
-	void SetTarget(vector3 v3Target);
+// Set the position of the camera
+void MyCameraClass::SetPosition(vector3 v3Position) {
+	
+}
 
-	void SetUp(vector3 v3Up);
+// Set the direction the camera is facing
+void MyCameraClass::SetTarget(vector3 v3Target) {
 
-	void MoveForward(float fIncrement);
+}
 
-	void MoveSideWays(float fIncrement);
+// Set the up direction of the camera
+void MyCameraClass::SetUp(vector3 v3Up) {
 
-	void MoveVertical(float fIncrement);
+}
 
-	void ChangePitch(float fIncrement);
+// Move the camera forward along its z axis
+void MyCameraClass::MoveForward(float fIncrement) {
 
-	void ChangeRoll(float fIncrement);
+}
 
-	void ChangeYaw(float fIncrement);
+// Move the camera sideways along its x axis
+void MyCameraClass::MoveSideWays(float fIncrement) {
 
-private:
+}
 
+// Move the camera vertically along its y axis
+void MyCameraClass::MoveVertical(float fIncrement) {
 
-};
+}
+
+// Change orientation of camera around its x axis
+void MyCameraClass::ChangePitch(float fIncrement) {
+
+}
+
+// Change orientation of camera around its z axis
+void MyCameraClass::ChangeRoll(float fIncrement) {
+
+}
+// Change orientation of camera around its y axis
+void MyCameraClass::ChangeYaw(float fIncrement) {
+
+}
