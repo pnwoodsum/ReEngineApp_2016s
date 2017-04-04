@@ -28,11 +28,16 @@ matrix4 MyCameraClass::GetProject(bool bOrthographic) {
 
 // Set the position of the camera
 void MyCameraClass::SetPosition(vector3 v3Position) {
+	m_v3ViewVector = v3Position;
+	quaternion q1 = glm::angleAxis(m_fRotation, m_v3UpVector);
+	matrix4 m1 = ToMatrix4(q1);
+	m_m4ViewMatrix = glm::translate(m_v3ViewVector) * m1;
 	
 }
 
 // Set the direction the camera is facing
 void MyCameraClass::SetTarget(vector3 v3Target) {
+	vector3 v3Dir = glm::normalize(m_v3ViewVector - v3Target);
 
 }
 
@@ -43,7 +48,8 @@ void MyCameraClass::SetUp(vector3 v3Up) {
 
 // Move the camera forward along its z axis
 void MyCameraClass::MoveForward(float fIncrement) {
-
+	m_v3ViewVector.x += fIncrement;
+	SetPosition(m_v3ViewVector);
 }
 
 // Move the camera sideways along its x axis
