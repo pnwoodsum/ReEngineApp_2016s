@@ -17,12 +17,17 @@ void AppClass::InitVariables(void)
 	//Reset the selection to -1, -1
 	m_selection = std::pair<int, int>(-1, -1);
 	//Set the camera position
-	m_pCameraMngr->SetPositionTargetAndView(
-		vector3(0.0f, 2.5f, 15.0f),//Camera position
-		vector3(0.0f, 2.5f, 0.0f),//What Im looking at
-		REAXISY);//What is up
+	//m_pCameraMngr->SetPositionTargetAndView(
+	//	vector3(0.0f, 2.5f, 15.0f),//Camera position
+	//	vector3(0.0f, 2.5f, 0.0f),//What Im looking at
+	//	REAXISY);//What is up
+	m_pCamera = new MyCameraClass();
+	
+	m_pMesh = new PrimitiveClass();
+	m_pMesh->GenerateCube(10.0f, RERED);
+
 	//Load a model onto the Mesh manager
-	m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
+	//m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
 }
 
 void AppClass::Update(void)
@@ -34,8 +39,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->Update();
 
 	//First person camera movement
-	if (m_bFPC == true)
-		CameraRotation();
+	//if (m_bFPC == true)
+	//	CameraRotation();
 
 	//Call the arcball method
 	ArcBall();
@@ -44,7 +49,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
 	
 	//Adds all loaded instance to the render list
-	m_pMeshMngr->AddSkyboxToRenderList();
+	//m_pMeshMngr->AddSkyboxToRenderList();
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	//Indicate the FPS
@@ -67,6 +72,8 @@ void AppClass::Display(void)
 	ClearScreen();
 	//Render the grid based on the camera's mode:
 	//m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
+
+	m_pMesh->Render(m_pCamera->GetProject(false), m_pCamera->GetView(), IDENTITY_M4);
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers

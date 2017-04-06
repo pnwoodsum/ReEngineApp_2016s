@@ -14,6 +14,8 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 public:
+	MyCameraClass* m_pCamera;
+	PrimitiveClass* m_pMesh;
 	typedef ReEngAppClass super;
 
 	/*
