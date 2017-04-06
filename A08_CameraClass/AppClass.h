@@ -20,7 +20,7 @@ public:
 
 	/*
 	USAGE: Constructor
-	ARGUMENTS: 
+	ARGUMENTS:
 	- HINSTANCE hInstance -> Instance of the window
 	- LPWSTR lpCmdLine -> Command line
 	- int nCmdShow -> Number or arguments
@@ -90,6 +90,7 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void Release(void) final;
+	void MyCameraRotation();
 };
 /*
 USAGE:

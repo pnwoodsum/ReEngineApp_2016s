@@ -42,88 +42,51 @@ matrix4 MyCameraClass::GetProject(bool bOrthographic) {
 
 // Set the position of the camera
 void MyCameraClass::SetPosition(vector3 v3Position) {
+	m_m4ViewMatrix = glm::translate(m_m4ViewMatrix, v3Position - m_v3View);
 	m_v3View = v3Position;
-	SetTarget(m_v3Target);
+	// SetTarget(m_v3Target);
 }
 
 // Set the direction the camera is facing
 void MyCameraClass::SetTarget(vector3 v3Target) {
-
-	matrix4 Result;
-	m_v3Up = REAXISY;
-	vector3 v3Dir = glm::normalize(v3Target - m_v3View);
-	m_v3Right = glm::normalize(glm::cross(v3Dir, m_v3Up));
-	m_v3Up = glm::cross(m_v3Right, v3Dir);
-
-	Result[0][0] = m_v3Right.x;
-	Result[1][0] = m_v3Right.y;
-	Result[2][0] = m_v3Right.z;
-	Result[0][1] = m_v3Up.x;
-	Result[1][1] = m_v3Up.y;
-	Result[2][1] = m_v3Up.z;
-	Result[0][2] = -v3Dir.x;
-	Result[1][2] = -v3Dir.y;
-	Result[2][2] = -v3Dir.z;
-	Result[3][0] = -glm::dot(m_v3Right, m_v3View);
-	Result[3][1] = -glm::dot(m_v3Up, m_v3View);
-	Result[3][2] = glm::dot(v3Dir, m_v3View);
-
-	vector3 v3YDir = vector3(v3Dir.x, 0.f, v3Dir.z);
-	m_fYaw = glm::acos(
-		(glm::dot(m_v3Forward, v3YDir))
-		/ (glm::length(m_v3Forward) * glm::length(v3YDir))
-	);
-	if (v3Dir.x == 0.f && v3Dir.z == 0.f)
-	{
-		m_fYaw = 0.f;
-		v3YDir = m_v3Up;
-	}
-
-	m_fPitch = glm::acos(
-		(glm::dot(v3YDir, v3Dir))
-		/ (glm::length(v3YDir) * glm::length(v3Dir))
-	);
-	m_v3Forward = v3Dir;
-
-	quaternion qYaw = glm::angleAxis(glm::degrees(m_fYaw), m_v3Up);
-	quaternion qPitch = glm::angleAxis(glm::degrees(m_fPitch), m_v3Right);
-	quaternion qRoll = glm::angleAxis(glm::degrees(m_fRoll), m_v3Forward);
-
-	matrix4 mYaw = ToMatrix4(qYaw);
-	matrix4 mPitch = ToMatrix4(qPitch);
-	matrix4 mRoll = ToMatrix4(qRoll);
-
-	matrix4 mOrientation = mYaw * mPitch * mRoll;
-
-	matrix4 mTranslation = glm::translate(m_v3View);
-
-	m_m4ViewMatrix = Result;
+	m_v3Target = v3Target;
+	m_v3Forward = glm::normalize(v3Target - m_v3View);
+	m_v3Right = glm::normalize(glm::cross(m_v3Forward, REAXISY));
+	SetUp(glm::cross(m_v3Right, m_v3Forward));
+	m_m4ViewMatrix = glm::lookAt(m_v3View, m_v3Target, m_v3Up);
 }
 
 // Set the up direction of the camera
 void MyCameraClass::SetUp(vector3 v3Up) {
-
+	m_v3Up = v3Up;
 }
 
 // Move the camera forward along its z axis
 void MyCameraClass::MoveForward(float fIncrement) {
-	m_v3View.x += fIncrement;
-	SetPosition(m_v3View);
+
+	SetPosition(m_v3View - (m_v3Forward * fIncrement));
 }
 
 // Move the camera sideways along its x axis
 void MyCameraClass::MoveSideWays(float fIncrement) {
-
+	SetPosition(m_v3View - (m_v3Right * fIncrement));
 }
 
 // Move the camera vertically along its y axis
 void MyCameraClass::MoveVertical(float fIncrement) {
-
+	SetPosition(m_v3View - (m_v3Up * fIncrement));
 }
+
 
 // Change orientation of camera around its x axis
 void MyCameraClass::ChangePitch(float fIncrement) {
 	// Right
+	m_fPitch += fIncrement;
+	glm::quat qPitch = glm::angleAxis(fIncrement, m_v3Right);
+	matrix4 mRotation = ToMatrix4(qPitch);
+	m_v3Forward = glm::rotate(m_v3Forward,fIncrement, m_v3Right);
+	SetUp(glm::cross(m_v3Forward, m_v3Right));
+	m_m4ViewMatrix = mRotation * m_m4ViewMatrix;
 }
 
 // Change orientation of camera around its z axis
@@ -134,4 +97,10 @@ void MyCameraClass::ChangeRoll(float fIncrement) {
 void MyCameraClass::ChangeYaw(float fIncrement) {
 	// Up
 
+	m_fYaw += fIncrement;
+	glm::quat qYaw = glm::angleAxis(fIncrement, m_v3Up);
+	matrix4 mRotation = ToMatrix4(qYaw);
+	m_v3Forward = glm::rotate(m_v3Forward, fIncrement, m_v3Up);
+	m_v3Right = glm::cross(m_v3Up, m_v3Forward);
+	m_m4ViewMatrix = mRotation * m_m4ViewMatrix;
 }
