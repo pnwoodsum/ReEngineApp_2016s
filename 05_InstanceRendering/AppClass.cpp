@@ -8,17 +8,17 @@ void AppClass::InitWindow(String a_sWindowName)
 void AppClass::InitVariables(void)
 {
 	//Reserve Memory for a MyMeshClass object
-	m_pMesh = new MyMesh();
+	m_pRedCube = new MyMesh();
 
-	m_pMesh->AddVertexPosition(vector3(0.0f, 0.0f, 0.0f));
-	m_pMesh->AddVertexPosition(vector3(5.0f, 0.0f, 0.0f));
-	m_pMesh->AddVertexPosition(vector3(0.0f, 5.0f, 0.0f));
+	m_pRedCube->AddVertexPosition(vector3(0.0f, 0.0f, 0.0f));
+	m_pRedCube->AddVertexPosition(vector3(5.0f, 0.0f, 0.0f));
+	m_pRedCube->AddVertexPosition(vector3(0.0f, 5.0f, 0.0f));
 
-	m_pMesh->AddVertexColor(REGREEN);
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexColor(REBLUE);
+	m_pRedCube->AddVertexColor(REGREEN);
+	m_pRedCube->AddVertexColor(RERED);
+	m_pRedCube->AddVertexColor(REBLUE);
 
-	m_pMesh->CompileOpenGL3X();
+	m_pRedCube->CompileOpenGL3X();
 
 	m_fMatrixArray = new float[m_nObjects * 16];
 	for (int nObject = 0; nObject < m_nObjects; nObject++)
@@ -61,7 +61,7 @@ void AppClass::Display(void)
 	//clear the screen
 	ClearScreen();
 
-	m_pMesh->RenderList(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), m_fMatrixArray, m_nObjects);//Rendering nObjects
+	m_pRedCube->RenderList(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), m_fMatrixArray, m_nObjects);//Rendering nObjects
 
 	//Render the grid based on the camera's mode:
 	m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
@@ -73,10 +73,10 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
 	SafeDelete(m_fMatrixArray);
-	if (m_pMesh != nullptr)
+	if (m_pRedCube != nullptr)
 	{
-		delete m_pMesh;
-		m_pMesh = nullptr;
+		delete m_pRedCube;
+		m_pRedCube = nullptr;
 	}
 	super::Release();
 }

@@ -12,18 +12,23 @@ public:
 	float m_fPitch;
 	float m_fRoll;
 
+	vector3 m_v3Pos;
 	vector3 m_v3View; // Pos of camera in , world
 	vector3 m_v3Up; // Unit vector up , local
 	vector3 m_v3Forward; // Unit vector forward , local
 	vector3 m_v3Right; // Unit vector right , local
+	vector3 m_v3UpInit; // Unit vector up , local
+	vector3 m_v3ForwardInit; // Unit vector forward , local
+	vector3 m_v3RightInit; // Unit vector right , local
 	vector3 m_v3Target; // Pos of target , world
+	
+	glm::quat orientation;
 
 	matrix4 m_m4ViewMatrix = IDENTITY_M4;
 	matrix4 m_m4ProjMatrix = IDENTITY_M4;
 	matrix4 m_m4OrthoMatrix = IDENTITY_M4;
 
 	MyCameraClass();
-	MyCameraClass(vector3 position, vector3 target, vector3 up);
 
 	// Get the camera's view matrix
 	matrix4 GetView(void);
@@ -48,6 +53,10 @@ public:
 
 	// Move the camera vertically along its y axis
 	void MoveVertical(float fIncrement);
+
+	void Reset();
+
+	void CalcViewMatrix();
 
 	// Change orientation of camera around its x axis
 	void ChangePitch(float fIncrement);

@@ -15,7 +15,7 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	MyMesh* m_pMesh = nullptr;
+	MyMesh* m_pRedCube = nullptr;
 	float* m_fMatrixArray = nullptr;
 	int m_nObjects = 200;
 

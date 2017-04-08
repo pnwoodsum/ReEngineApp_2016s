@@ -16,7 +16,7 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 	/* MyMesh object */
-	MyMesh* m_pMesh = nullptr;
+	MyMesh* m_pRedCube = nullptr;
 
 public:
 	typedef ReEngAppClass super;

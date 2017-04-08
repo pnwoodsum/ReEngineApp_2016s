@@ -15,7 +15,13 @@ class AppClass : public ReEngAppClass
 {
 public:
 	MyCameraClass* m_pCamera;
-	PrimitiveClass* m_pMesh;
+	PrimitiveClass* m_pRedCube;
+	PrimitiveClass* m_pBlueCube;
+	PrimitiveClass* m_pGreenCube;
+	PrimitiveClass* m_pYellowCube;
+	PrimitiveClass* m_pOrangeCube;
+	PrimitiveClass* m_pFloor;
+	
 	typedef ReEngAppClass super;
 
 	/*

@@ -17,18 +17,26 @@ void AppClass::InitVariables(void)
 
 	//Reset the selection to -1, -1
 	m_selection = std::pair<int, int>(-1, -1);
-	//Set the camera position
-	//m_pCameraMngr->SetPositionTargetAndView(
-	//	vector3(0.0f, 2.5f, 15.0f),//Camera position
-	//	vector3(0.0f, 2.5f, 0.0f),//What Im looking at
-	//	REAXISY);//What is up
+
 	m_pCamera = new MyCameraClass();
 
-	m_pMesh = new PrimitiveClass();
-	m_pMesh->GenerateCube(10.0f, RERED);
+	m_pRedCube = new PrimitiveClass();
+	m_pRedCube->GenerateCube(10.0f, RERED);
 
-	//Load a model onto the Mesh manager
-	//m_pMeshMngr->LoadModel("Lego\\Unikitty.bto", "Unikitty");
+	m_pBlueCube = new PrimitiveClass();
+	m_pBlueCube->GenerateCube(10.0f, REBLUE);
+
+	m_pGreenCube = new PrimitiveClass();
+	m_pGreenCube->GenerateCube(10.0f, REGREEN);
+
+	m_pYellowCube = new PrimitiveClass();
+	m_pYellowCube->GenerateCube(10.0f, REYELLOW);
+
+	m_pOrangeCube = new PrimitiveClass();
+	m_pOrangeCube->GenerateCube(10.0f, REORANGE);
+
+	m_pFloor = new PrimitiveClass();
+	m_pFloor->GenerateCube(100.0f, REPURPLE);
 }
 
 void AppClass::Update(void)
@@ -50,8 +58,10 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(ToMatrix4(m_qArcBall), 0);
 
 	//Adds all loaded instance to the render list
-	//m_pMeshMngr->AddSkyboxToRenderList();
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
+
+	//Calc view matrix
+	m_pCamera->CalcViewMatrix();
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
@@ -74,7 +84,18 @@ void AppClass::Display(void)
 	//Render the grid based on the camera's mode:
 	//m_pMeshMngr->AddGridToRenderListBasedOnCamera(m_pCameraMngr->GetCameraMode());
 
-	m_pMesh->Render(m_pCamera->GetProject(false), m_pCamera->GetView(), IDENTITY_M4);
+	matrix4 projMat = m_pCamera->GetProject(false);
+	matrix4 viewMat = m_pCamera->GetView();
+	
+
+	// Render cube
+	m_pRedCube->Render(projMat, viewMat, IDENTITY_M4);
+	m_pBlueCube->Render(projMat, viewMat, glm::translate(IDENTITY_M4, vector3(-20.0f, 0.0f, 0.0f)));
+	m_pGreenCube->Render(projMat, viewMat, glm::translate(IDENTITY_M4, vector3(-20.0f, -20.0f, -20.0f)));
+	m_pYellowCube->Render(projMat, viewMat, glm::translate(IDENTITY_M4, vector3(20.0f, 20.0f, 0.0f)));
+	m_pOrangeCube->Render(projMat, viewMat, glm::translate(IDENTITY_M4, vector3(0.0f, -20.0f, 20.0f)));
+	m_pFloor->Render(projMat, viewMat, glm::translate(IDENTITY_M4, vector3(0.0f, -90.0f, 0.0f)));
+
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
 	m_pGLSystem->GLSwapBuffers(); //Swaps the OpenGL buffers
